@@ -1,13 +1,8 @@
 Repositorio para el proyecto de SNR de la escuela de SELGIFS.
 
-Breve intro al código.
+He actualizado el código.
 
-3 codigos que manejo a dia de hoy: 
+El nuevo me saca los parámetros de ajuste de fitting4gauss y los tengo disponibles en el finder. Con esto consigo tener mapas de todos los parámetros, en particular, el de la varianza de la cuarta gaussiana, la que aparece solo cuando hay una SN. Los valores de 10.000 es como si valiese infinito en el fit, pero que le pongo un límite por los tiempos de ejecución.
 
-El que pone Checking es de cuando solo controlaba un spaxel a mano y sirve como comprobacion 
-para todo lo que se va fiteando, por si alguno da algo raro. Los que serian el codigo en si 
-serian la funcion fitting4gauss a la que llamo desde VPSNfinder. El codigo que se corre es 
-este ultimo, y tienen que estar en la misma carpeta. Tambien tiene que estar el fichero de 
-datos, que tambien he subido. Cuando se corre el programa se generan unos resultados por terminal, 
-y dos graficas, que son las que estan en la carpeta ya. He comentado los codigos en la medida de 
-lo posible. Seguire trabajando con ello y modificando al final del dia los ficheros segun avance. 
+Ya he arreglado los plots para que sean bonitos.
+
