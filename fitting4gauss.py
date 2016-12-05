@@ -61,7 +61,7 @@ def fitting4gauss(flux,n,m):
 	#Espero que sea siempre la linea de H alfa..........
 	ruido = 0.1 #Esto es para que no me use maximos falsos o feos
 	if spect1max[PK]<ruido: 
-		P0 = Pini + 1
+		P0 = Pini + 20
 
 	#print "Posicion de la linea de H alpha"
 	#print P0
@@ -115,54 +115,48 @@ def fitting4gauss(flux,n,m):
 	#print lambfv4
 
 	#print spect1v4
-	ajA4=[] #Todos estos vectores son ncesarios para rellenarlos con los resultados del bucle
-	ajB4=[]
-	ajC4=[]
-	ajD4=[]
+	A1=[] #Todos estos vectores son ncesarios para rellenarlos con los resultados del bucle
+	B1=[]	
+	A2=[]
+	B2=[]
+	A3=[]
+	B3=[]
+	A4=[]
+	B4=[]
 	C4=[]
-	EW1=[]
-	EW2=[]
-	EW3=[]
-	EW4=[]
 	if spect1v4[np.argmax(spect1v4)]>=0.4: #Esto es, si el valor donde esta el maximo es considerable, tira para delante.
-		param_bounds=([0,0,0,0,0,0,0,100.0,-np.inf],[5000,5000,5000,5000,5000,5000,5000,10000,np.inf])#Estos limites son para que no rompa por exceso de tiempo en el ajuste. El 100 en el limite inferior es importante para que sea una SN
+		param_bounds=([0,0,0,0,0,0,0,120.0,-np.inf],[100,1000,100,1000,100,1000,100,10000,np.inf])#Estos limites son para que no rompa por exceso de tiempo en el ajuste. El 100 en el limite inferior es importante para que sea una SN
 		(A1, B1, A2, B2, A3, B3, A4, B4, C4), pcov = curve_fit(gauss4, lambv4, spect1v4, bounds=param_bounds)
 		#print "Parametros del fit"
 		#print (A1, B1, A2, B2, A3, B3, A4, B4, C4)
-
-		ajA4=A1 * np.exp(-(lambv4-x0)**2/(2.0*B1)) #Primera gaussiana, picada en x0
-		ajB4=A2 * np.exp(-(lambv4-(x0-15))**2/(2.0*B2)) #Segunda gaussiana, a la izquierda
-		ajC4=A3 * np.exp(-(lambv4-(x0+21))**2/(2.0*B3)) #Tercera gaussiana, a la derecha
-		ajD4=A4 * np.exp(-(lambv4-(x0-7))**2/(2.0*B4)) #Cuarta gaussiana, entre Halpha y [NII]
-		ajuste4= ajA4 + ajB4 + ajC4 + ajD4 + C4
-		#Calculamos el EW de las lineas
-		EW1 = (1-C4/(A1+C4))*np.sqrt(2*np.pi*B1)
-		EW2 = (1-C4/(A2+C4))*np.sqrt(2*np.pi*B2)
-		EW3 = (1-C4/(A3+C4))*np.sqrt(2*np.pi*B3)
-		EW4 = (1-C4/(A4+C4))*np.sqrt(2*np.pi*B4)
 		#print "EW Halpha"
 		#print EW
-		Param1 = 2*A2
+		Param1 = 1.2*A2
 		Param2 = 2*ruido
-		if B4>150 and A4>=Param1 and A4>Param2 and B4<300: #Esto es para identificar las SN
+		if B4>=150 and A4>=Param1 and A4>=Param2 and B4<=300: #Esto es para identificar las SN
 			#print "-----------------------"
 			#print "There is SN emission."
 			#print "Position: ( m , n )=(",m,",",n,")"
 			SN = 1 #Identificador de supernova
-			return (SN, m, n, lambv4, spect1v4, ajA4, ajB4, ajC4, ajD4, C4, x0, EW1, EW2, EW3, EW4)
+			return (SN, m, n, lambv4, spect1v4, A1, B1, A2, B2, A3, B3, A4, B4, C4, x0)
 		else:
 			SN = 0 #Esto es que no hay SN
-			return (SN, m, n, lambv4, spect1v4, ajA4, ajB4, ajC4, ajD4, C4, x0, EW1, EW2, EW3, EW4)
+			B4 = 10000
+			return (SN, m, n, lambv4, spect1v4, A1, B1, A2, B2, A3, B3, A4, B4, C4, x0)
 	else:
 		SN = 0 #Esto es que no hay SN
 		#print "Position: ( m , n )=(",m,",",n,")"
 		#print "No enough signal to fit. Probably you are far from the galactic center."
-		ajA4 = np.linspace(0,0,len(lambv4))
-		ajB4 = np.linspace(0,0,len(lambv4))
-		ajC4 = np.linspace(0,0,len(lambv4))
-		ajD4 = np.linspace(0,0,len(lambv4))
-		C4 = np.linspace(0,0,len(lambv4))
-		return (SN, m, n, lambv4, spect1v4, ajA4, ajB4, ajC4, ajD4, C4, x0, EW1, EW2, EW3, EW4)
+		A1 = 0
+		B1 = 0
+		A2 = 0
+		B2 = 0
+		A3 = 0
+		B3 = 0
+		A4 = 0
+		B4 = 10000
+		C4 = 0
+		return (SN, m, n, lambv4, spect1v4, A1, B1, A2, B2, A3, B3, A4, B4, C4, x0)
 
 
 	
