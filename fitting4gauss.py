@@ -54,15 +54,25 @@ def fitting4gauss(flux,n,m):
 	#print "Longitud del vector flujo (check point): "
 	#print len(spect1)
 	#Salto entre dato y dato en wavelength
+    
+    ######
+    ###### ESTO HAY QUE LEERLO DEL HEADER, PARA CUBOS QUE NO SON DE CALIFA NO FUNCIONARÍA
+    ###### TAMBIEN, LA POSICIÓN DE Halpha y Hbeta HAY QUE LEERLA DEL CUBO
+    ###### EL KEYWORD MED_VEL TE DA LA VELOCIDAD DE RECESIÓN QUE PUEDES
+    ###### CONVERTIR A REDSHIFT, LAS LINEAS ESTAN EN LAMBDA_EM*(1+Z)
+    ######
+    
 	salto = (7501.0-3749.0)/len(spect1)
 	#Limites en la longitud de onda (sacado de la web de CALIFA) Angstroms
 	lamb0 = 3749.0
 	lambf = 7501.0
 	lamb = np.linspace(lamb0, lambf, len(spect1)) #Defino vector en ese tramo
-
 	#Ventana de datos para ajustar linea - Necesito algo generico para cuidar la cinematica
 	lamb00 = 3749 #Posicion 0 en el array tiene esta longitud de onda
-	P = 1400
+
+    ######## PORQUE 1400 ?????? 
+
+    P = 1400 
 	Pini = P - 30
 	Pfin = P + 30
 	#Saco el flujo y la longitud de onda
@@ -83,6 +93,9 @@ def fitting4gauss(flux,n,m):
 	x0 = P0*salto + lamb00 + 2 #El 2 es necesario porque soy un noob de python
 
 	x0b = x0 - 1714 #Posicion de la linea de Hb
+    
+    ######## PORQUE 1714 ??????
+    
 	#print x0
 	#Aqui comento la ventana para fitear solo la linea de H alpha
 	#Ventana de datos para ajustar H alpha y cercanias.
